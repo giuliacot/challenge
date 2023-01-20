@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import theme from '../theme';
+import styled from 'styled-components'
+import theme from '../../theme'
 
 const Button = styled.button`
   background: transparent;
@@ -18,6 +18,10 @@ const Button = styled.button`
     border: 1px solid ${theme.palette.secondary.dark};
     color: ${theme.palette.primary.dark};
   }
-`;
 
-export default Button;
+  & + & {
+    margin-left: ${theme.spacing(2)};
+  }
+`
+
+export default Button
