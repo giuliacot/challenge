@@ -1,1 +1,1 @@
-import { RootState } from '../reducers';
+import { RootState } from '../store'
