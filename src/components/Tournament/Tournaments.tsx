@@ -21,7 +21,7 @@ export const Tournaments = () => {
       )}
       {status === 'rejected' && <ErrorMsg />}
       {status === 'idle' && entities.length === 0 && (
-        <div>No tournaments found</div>
+        <MainContent>No tournaments found</MainContent>
       )}
       <CardsGrid>
         {status === 'idle' &&

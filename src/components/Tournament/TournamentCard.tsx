@@ -74,13 +74,14 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       <Card key={id}>
         <H6>{name}</H6>
         <CardInfo>
-          <CardText>{organizer}</CardText>
-          <CardText>{game}</CardText>
+          <CardText>Organizer: {organizer}</CardText>
+          <CardText>Game: {game}</CardText>
           <CardText>
-            {participants?.current}/{participants?.max}
+            Partecipants: {participants?.current}/{participants?.max}
           </CardText>
           {startDate && (
             <CardText>
+              Start:{' '}
               {Intl.DateTimeFormat('en-GB', options).format(
                 new Date(startDate)
               )}

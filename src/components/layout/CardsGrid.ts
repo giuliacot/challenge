@@ -5,7 +5,6 @@ export const CardsGrid = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
-  height: 100vh;
   margin: 0;
   padding: 0;
   grid-row-gap: ${theme.spacing(6)};
