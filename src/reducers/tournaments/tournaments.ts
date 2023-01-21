@@ -87,6 +87,8 @@ interface TournamentsAction {
     | 'tournaments/error'
     | 'tournaments/loading'
     | 'tournament/edit'
+    | 'tournament/edit/loaded'
+    | 'tournament/delete'
   payload: InitialState
 }
 
@@ -103,6 +105,10 @@ const updatesTournamentName = (
   })
 }
 
+const deleteTournament = (state: InitialState, id: string) => {
+  return state.entities.filter((t) => t.id !== id)
+}
+
 export const tournamentsReducer = (
   state = initialState,
   action: TournamentsAction
@@ -112,10 +118,10 @@ export const tournamentsReducer = (
       return state
     }
     case 'tournaments/loaded': {
-      return { ...state, ...action.payload }
+      return { ...action.payload }
     }
     case 'tournaments/error': {
-      return { ...state, ...action.payload }
+      return { ...action.payload }
     }
     case 'tournament/edit': {
       const toUpdateId = action.payload.entities[0].id
@@ -125,8 +131,17 @@ export const tournamentsReducer = (
         toUpdateId,
         editedName
       )
-
       return { ...state, entities: updatedTournament }
+    }
+    case 'tournament/edit/loaded': {
+      return { ...action.payload }
+    }
+    case 'tournament/delete': {
+      const toDeleteId = action.payload.entities[0].id
+      return {
+        ...state,
+        entities: deleteTournament(state, toDeleteId),
+      }
     }
     default:
       return state
@@ -137,7 +152,7 @@ export const tournamentsReducer = (
  * Thunk functions
  */
 export const fetchTournaments =
-  (): ThunkAction<void, RootState, unknown, TournamentsAction> =>
+  (): ThunkAction<void, InitialState, unknown, TournamentsAction> =>
   async (dispatch) => {
     const response = await fetch(API_TOURNAMENTS_URL)
     const result = await response.json()
@@ -154,6 +169,38 @@ export const fetchTournaments =
       })
     }
     if (response.status >= 400 && response.status <= 599) {
+      dispatch({
+        type: 'tournaments/error',
+        payload: { entities: [], status: 'rejected' },
+      })
+    }
+  }
+
+export const patchTournament =
+  ({
+    id,
+    editedName,
+  }: {
+    id: string
+    editedName: string
+  }): ThunkAction<void, InitialState, null, TournamentsAction> =>
+  async (dispatch, getState) => {
+    const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ name: editedName }),
+    })
+    await response.json()
+    const state = getState()
+
+    // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
+    // Not the best approach: we should create a popup msg to the user that the updates didn't work
+
+    if (response.status >= 200 && response.status <= 299) {
+      dispatch({
+        type: 'tournament/edit/loaded',
+        payload: { entities: [...state.entities], status: 'idle' },
+      })
+    } else {
       dispatch({
         type: 'tournaments/error',
         payload: { entities: [], status: 'rejected' },

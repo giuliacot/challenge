@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useAppDispatch } from '../../hooks'
 import {
   isTournament,
+  patchTournament,
   Tournament,
 } from '../../reducers/tournaments/tournaments'
 import theme from '../../theme'
@@ -42,20 +43,29 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       const checkIfHasOnlyAllowedChars = new RegExp(/[a-zA-Z0-9\s]+$/)
       const editedName = window.prompt('New tournament name:', name)
 
-      if (editedName) {
-        if (checkIfHasOnlyAllowedChars.test(editedName)) {
-          dispatch({
-            type: 'tournament/edit',
-            payload: { entities: [{ id, name: editedName }] },
-          })
-        }
+      if (editedName && checkIfHasOnlyAllowedChars.test(editedName)) {
+        dispatch<any>(patchTournament({ id, editedName }))
+        dispatch({
+          type: 'tournament/edit',
+          payload: { entities: [{ id, name: editedName }] },
+        })
       }
     }
-
+    // TODO: removes useless name
     const handleDelete = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+      name: string,
+      id: string
     ) => {
-      console.log('delete')
+      const userReply = window.confirm(
+        'Do you really want to delete this tournament?'
+      )
+      if (userReply) {
+        dispatch({
+          type: 'tournament/delete',
+          payload: { entities: [{ id, name }] },
+        })
+      }
     }
 
     return (
@@ -76,7 +86,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
           )}
         </CardInfo>
         <Button onClick={(e) => handleEdit(e, name, id)}>Edit</Button>
-        <Button onClick={(e) => handleDelete(e)}>Delete</Button>
+        <Button onClick={(e) => handleDelete(e, name, id)}>Delete</Button>
       </Card>
     )
   }
