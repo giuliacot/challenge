@@ -73,7 +73,7 @@ export function isTournament(
 
 interface InitialState {
   entities: Tournament[]
-  status: 'loading' | 'idle' | 'rejected'
+  status?: 'loading' | 'idle' | 'rejected'
 }
 
 const initialState: InitialState = {
@@ -82,8 +82,25 @@ const initialState: InitialState = {
 }
 
 interface TournamentsAction {
-  type: 'tournaments/loaded' | 'tournaments/error' | 'tournaments/loading'
+  type:
+    | 'tournaments/loaded'
+    | 'tournaments/error'
+    | 'tournaments/loading'
+    | 'tournament/edit'
   payload: InitialState
+}
+
+const updatesTournamentName = (
+  state: InitialState,
+  id: string,
+  name: string
+) => {
+  return state.entities.map((t) => {
+    if (t.id === id) {
+      return { ...t, name }
+    }
+    return t
+  })
 }
 
 export const tournamentsReducer = (
@@ -99,6 +116,17 @@ export const tournamentsReducer = (
     }
     case 'tournaments/error': {
       return { ...state, ...action.payload }
+    }
+    case 'tournament/edit': {
+      const toUpdateId = action.payload.entities[0].id
+      const editedName = action.payload.entities[0].name
+      const updatedTournament = updatesTournamentName(
+        state,
+        toUpdateId,
+        editedName
+      )
+
+      return { ...state, entities: updatedTournament }
     }
     default:
       return state

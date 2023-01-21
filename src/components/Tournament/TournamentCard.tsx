@@ -29,6 +29,7 @@ const CardInfo = styled.div`
 
 export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
   const dispatch = useAppDispatch()
+
   if (isTournament(tournament)) {
     const { id, name, organizer, game, participants, startDate } = tournament
 
@@ -37,15 +38,18 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       name: string,
       id: string
     ) => {
-      // TODO: check input value Latin letters, numbers, and spaces, not an empty string or only spaces.
       // add error msg if check is not passed
+      const checkIfHasOnlyAllowedChars = new RegExp(/[a-zA-Z0-9\s]+$/)
+      const editedName = window.prompt('New tournament name:', name)
 
-      const newName = window.prompt('New tournament name:', name)
-
-      // dispatch({
-      //   type: 'tournament/edit',
-      //   payload: { id, name: newName ?? '' },
-      // })
+      if (editedName) {
+        if (checkIfHasOnlyAllowedChars.test(editedName)) {
+          dispatch({
+            type: 'tournament/edit',
+            payload: { entities: [{ id, name: editedName }] },
+          })
+        }
+      }
     }
 
     const handleDelete = (

@@ -24,7 +24,6 @@ export function renderWithProviders(
     store = configureStore({
       reducer: {
         tournaments: tournamentsReducer,
-        // tounrmanet: tournamentReducer,
       },
       preloadedState,
     }),
