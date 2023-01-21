@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useAppDispatch } from '../../hooks'
 import {
+  checkTournamentNameOnlyAllowedChars,
   deleteTournament,
   isTournament,
   patchTournament,
@@ -41,10 +42,10 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       id: string
     ) => {
       // add error msg if check is not passed
-      const checkIfHasOnlyAllowedChars = new RegExp(/[a-zA-Z0-9\s]+$/)
+
       const editedName = window.prompt('New tournament name:', name)
 
-      if (editedName && checkIfHasOnlyAllowedChars.test(editedName)) {
+      if (editedName && checkTournamentNameOnlyAllowedChars.test(editedName)) {
         dispatch<any>(patchTournament({ id, editedName }))
         dispatch({
           type: 'tournament/edit',

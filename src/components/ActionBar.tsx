@@ -6,7 +6,11 @@ import Input from './atoms/Input'
 
 import { useDebouncedCallback } from 'use-debounce'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { searchTournaments } from '../reducers/tournaments/tournaments'
+import {
+  checkTournamentNameOnlyAllowedChars,
+  createTournament,
+  searchTournaments,
+} from '../reducers/tournaments/tournaments'
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -35,6 +39,17 @@ export const ActionBar = () => {
     }
   }, [searched, dispatch])
 
+  const handleCreationTournament = () => {
+    const newTournament = window.prompt('Tournament name:')
+
+    if (
+      newTournament &&
+      checkTournamentNameOnlyAllowedChars.test(newTournament)
+    ) {
+      dispatch<any>(createTournament({ newTournament }))
+    }
+  }
+
   return (
     <ActionBarWrapper>
       <Input
@@ -43,7 +58,9 @@ export const ActionBar = () => {
         onChange={(e) => debouncedSearch(e.target.value)}
         disabled={status === 'loading'}
       />
-      <Button>Create Tournament</Button>
+      <Button onClick={() => handleCreationTournament()}>
+        Create Tournament
+      </Button>
     </ActionBarWrapper>
   )
 }

@@ -1,51 +1,3 @@
-/**
- * react toolkit way
- */
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-// export const fetchTournaments = createAsyncThunk<
-//   Tournament[],
-//   undefined,
-//   {
-//     rejectValue: Error
-//   }
-// >('/tournaments', async (_, thunkApi) => {
-//   const response = await fetch(API_TOURNAMENTS_URL)
-//   try {
-//     if (response.status >= 200 && response.status <= 299) {
-//       return (await response.json()) as Tournament[]
-//     }
-//     if (response.status >= 400) {
-//       return thunkApi.rejectWithValue(
-//         new Error(`Error: ${response.body} with status: ${response.status}`)
-//       )
-//     }
-//     return (await response.json()) as Tournament[]
-//   } catch (error) {
-//     return thunkApi.rejectWithValue(new Error(`Error: ${error}`))
-//   }
-// })
-
-// export const tournamentsSlice = createSlice({
-//   name: 'tournaments',
-//   initialState,
-//   reducers: { showAllTournaments(state) {} },
-//   extraReducers: (builder) => {
-//     builder.addCase(fetchTournaments.pending, (state, _) => {
-//       state.status = 'loading'
-//     })
-//     builder.addCase(fetchTournaments.rejected, (state) => {
-//       state.status = 'rejected'
-//     })
-//     builder.addCase(fetchTournaments.fulfilled, (state, action) => {
-//       state.entities = action.payload.map((result: Tournament) => result)
-//       state.status = 'idle'
-//     })
-//   },
-// })
-
-// export const { showAllTournaments } = tournamentsSlice.actions
-// export const tournamentReducer = tournamentsSlice.reducer
-
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../../constants/api'
 import { RootState } from '../../store'
@@ -91,6 +43,7 @@ interface TournamentsAction {
     | 'tournament/delete'
     | 'tournament/delete/loaded'
     | 'tournament/searched/loaded'
+    | 'tournament/creation'
   payload: InitialState
 }
 
@@ -106,6 +59,8 @@ const updatesTournamentName = (
     return t
   })
 }
+
+export const checkTournamentNameOnlyAllowedChars = new RegExp(/[a-zA-Z0-9\s]+$/)
 
 const removeTournament = (state: InitialState, id: string) => {
   return state.entities.filter((t) => t.id !== id)
@@ -132,6 +87,7 @@ export const tournamentsReducer = (
     case 'tournament/edit': {
       const toUpdateId = action.payload.entities[0].id
       const editedName = action.payload.entities[0].name
+
       const updatedTournament = updatesTournamentName(
         state,
         toUpdateId,
@@ -154,6 +110,14 @@ export const tournamentsReducer = (
     }
     case 'tournament/searched/loaded': {
       console.log(4)
+      return {
+        ...state,
+        entities: action.payload.entities,
+        status: action.payload.status,
+      }
+    }
+
+    case 'tournament/creation': {
       return {
         ...state,
         entities: action.payload.entities,
@@ -200,6 +164,9 @@ export const patchTournament =
   async (dispatch, getState) => {
     const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
       method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ name: editedName }),
     })
     await response.json()
@@ -234,9 +201,6 @@ export const deleteTournament =
     await response.json()
     const { tournaments } = getState()
 
-    // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
-    // Not the best approach: we should create a popup msg to the user that the updates didn't work
-
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
         type: 'tournament/delete/loaded',
@@ -267,6 +231,37 @@ export const searchTournaments =
       dispatch({
         type: 'tournament/searched/loaded',
         payload: { entities: searchResult, status: 'idle' },
+      })
+    } else {
+      dispatch({
+        type: 'tournaments/error',
+        payload: { entities: [], status: 'rejected' },
+      })
+    }
+  }
+
+export const createTournament =
+  ({
+    newTournament,
+  }: {
+    newTournament: string
+  }): ThunkAction<void, RootState, null, TournamentsAction> =>
+  async (dispatch, getState) => {
+    const response = await fetch(`${API_TOURNAMENTS_URL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: newTournament }),
+    })
+    const result = await response.json()
+    const { tournaments } = getState()
+
+    if (response.status >= 200 && response.status <= 299) {
+      dispatch({
+        type: 'tournament/creation',
+        payload: {
+          entities: [...tournaments.entities, result],
+          status: 'idle',
+        },
       })
     } else {
       dispatch({
