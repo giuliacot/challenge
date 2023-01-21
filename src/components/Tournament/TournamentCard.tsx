@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useAppDispatch } from '../../hooks'
 import {
+  deleteTournament,
   isTournament,
   patchTournament,
   Tournament,
@@ -61,6 +62,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         'Do you really want to delete this tournament?'
       )
       if (userReply) {
+        dispatch<any>(deleteTournament({ id }))
         dispatch({
           type: 'tournament/delete',
           payload: { entities: [{ id, name }] },

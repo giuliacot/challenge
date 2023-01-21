@@ -48,7 +48,6 @@
 
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../../constants/api'
-import { RootState } from '../../store'
 
 export type Tournament = {
   id: string
@@ -89,6 +88,7 @@ interface TournamentsAction {
     | 'tournament/edit'
     | 'tournament/edit/loaded'
     | 'tournament/delete'
+    | 'tournament/delete/loaded'
   payload: InitialState
 }
 
@@ -105,7 +105,7 @@ const updatesTournamentName = (
   })
 }
 
-const deleteTournament = (state: InitialState, id: string) => {
+const removeTournament = (state: InitialState, id: string) => {
   return state.entities.filter((t) => t.id !== id)
 }
 
@@ -140,8 +140,11 @@ export const tournamentsReducer = (
       const toDeleteId = action.payload.entities[0].id
       return {
         ...state,
-        entities: deleteTournament(state, toDeleteId),
+        entities: removeTournament(state, toDeleteId),
       }
+    }
+    case 'tournament/delete/loaded': {
+      return { ...action.payload }
     }
     default:
       return state
@@ -198,6 +201,35 @@ export const patchTournament =
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
         type: 'tournament/edit/loaded',
+        payload: { entities: [...state.entities], status: 'idle' },
+      })
+    } else {
+      dispatch({
+        type: 'tournaments/error',
+        payload: { entities: [], status: 'rejected' },
+      })
+    }
+  }
+
+export const deleteTournament =
+  ({
+    id,
+  }: {
+    id: string
+  }): ThunkAction<void, InitialState, null, TournamentsAction> =>
+  async (dispatch, getState) => {
+    const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
+      method: 'DELETE',
+    })
+    await response.json()
+    const state = getState()
+
+    // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
+    // Not the best approach: we should create a popup msg to the user that the updates didn't work
+
+    if (response.status >= 200 && response.status <= 299) {
+      dispatch({
+        type: 'tournament/delete/loaded',
         payload: { entities: [...state.entities], status: 'idle' },
       })
     } else {
