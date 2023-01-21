@@ -48,6 +48,7 @@
 
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../../constants/api'
+import { RootState } from '../../store'
 
 export type Tournament = {
   id: string
@@ -89,6 +90,7 @@ interface TournamentsAction {
     | 'tournament/edit/loaded'
     | 'tournament/delete'
     | 'tournament/delete/loaded'
+    | 'tournament/searched/loaded'
   payload: InitialState
 }
 
@@ -115,7 +117,11 @@ export const tournamentsReducer = (
 ) => {
   switch (action.type) {
     case 'tournaments/loading': {
-      return state
+      console.log(3)
+      return {
+        entities: action.payload.entities,
+        status: action.payload.status,
+      }
     }
     case 'tournaments/loaded': {
       return { ...action.payload }
@@ -146,6 +152,14 @@ export const tournamentsReducer = (
     case 'tournament/delete/loaded': {
       return { ...action.payload }
     }
+    case 'tournament/searched/loaded': {
+      console.log(4)
+      return {
+        ...state,
+        entities: action.payload.entities,
+        status: action.payload.status,
+      }
+    }
     default:
       return state
   }
@@ -154,16 +168,12 @@ export const tournamentsReducer = (
 /**
  * Thunk functions
  */
+
 export const fetchTournaments =
   (): ThunkAction<void, InitialState, unknown, TournamentsAction> =>
   async (dispatch) => {
     const response = await fetch(API_TOURNAMENTS_URL)
     const result = await response.json()
-
-    dispatch({
-      type: 'tournaments/loading',
-      payload: { entities: [], status: 'loading' },
-    })
 
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
@@ -186,7 +196,7 @@ export const patchTournament =
   }: {
     id: string
     editedName: string
-  }): ThunkAction<void, InitialState, null, TournamentsAction> =>
+  }): ThunkAction<void, RootState, null, TournamentsAction> =>
   async (dispatch, getState) => {
     const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
       method: 'PATCH',
@@ -201,7 +211,7 @@ export const patchTournament =
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
         type: 'tournament/edit/loaded',
-        payload: { entities: [...state.entities], status: 'idle' },
+        payload: { entities: state.tournaments.entities, status: 'idle' },
       })
     } else {
       dispatch({
@@ -216,13 +226,13 @@ export const deleteTournament =
     id,
   }: {
     id: string
-  }): ThunkAction<void, InitialState, null, TournamentsAction> =>
+  }): ThunkAction<void, RootState, null, TournamentsAction> =>
   async (dispatch, getState) => {
     const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
       method: 'DELETE',
     })
     await response.json()
-    const state = getState()
+    const { tournaments } = getState()
 
     // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
     // Not the best approach: we should create a popup msg to the user that the updates didn't work
@@ -230,7 +240,33 @@ export const deleteTournament =
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
         type: 'tournament/delete/loaded',
-        payload: { entities: [...state.entities], status: 'idle' },
+        payload: {
+          entities: tournaments.entities,
+          status: tournaments.status,
+        },
+      })
+    } else {
+      dispatch({
+        type: 'tournaments/error',
+        payload: { entities: [], status: 'rejected' },
+      })
+    }
+  }
+
+export const searchTournaments =
+  ({
+    searched,
+  }: {
+    searched: string
+  }): ThunkAction<void, RootState, null, TournamentsAction> =>
+  async (dispatch) => {
+    const response = await fetch(`${API_TOURNAMENTS_URL}?q=${searched}`)
+    const searchResult = await response.json()
+
+    if (response.status >= 200 && response.status <= 299) {
+      dispatch({
+        type: 'tournament/searched/loaded',
+        payload: { entities: searchResult, status: 'idle' },
       })
     } else {
       dispatch({
