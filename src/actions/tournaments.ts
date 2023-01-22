@@ -23,13 +23,12 @@ export const fetchTournaments =
     const response = await fetch(API_TOURNAMENTS_URL)
     const result = await response.json()
 
-    if (response.status >= 200 && response.status <= 299) {
+    if (response.ok) {
       dispatch({
         type: 'tournaments/loaded',
         payload: { entities: result, status: 'idle' },
       })
-    }
-    if (response.status >= 400 && response.status <= 599) {
+    } else {
       dispatch(errorTournament())
     }
   }

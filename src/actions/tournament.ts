@@ -19,7 +19,7 @@ export const createTournament =
     const result = await response.json()
     const { tournaments } = getState()
 
-    if (response.status >= 200 && response.status <= 299) {
+    if (response.ok) {
       dispatch({
         type: 'tournament/creation',
         payload: {
@@ -45,7 +45,7 @@ export const deleteTournament =
     await response.json()
     const { tournaments } = getState()
 
-    if (response.status >= 200 && response.status <= 299) {
+    if (response.ok) {
       dispatch({
         type: 'tournament/delete/loaded',
         payload: {
@@ -80,7 +80,7 @@ export const patchTournament =
     // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
     // Not the best approach: we should create a popup msg to the user that the updates didn't work
 
-    if (response.status >= 200 && response.status <= 299) {
+    if (response.ok) {
       dispatch({
         type: 'tournament/edit/loaded',
         payload: { entities: tournaments.entities, status: 'idle' },
