@@ -2,6 +2,7 @@ import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../constants/api'
 import { TournamentsAction } from '../reducers/tournaments/types'
 import { RootState } from '../store'
+import { errorTournament } from './tournaments'
 
 export const createTournament =
   ({
@@ -27,10 +28,7 @@ export const createTournament =
         },
       })
     } else {
-      dispatch({
-        type: 'tournaments/error',
-        payload: { entities: [], status: 'rejected' },
-      })
+      dispatch(errorTournament())
     }
   }
 
@@ -56,10 +54,7 @@ export const deleteTournament =
         },
       })
     } else {
-      dispatch({
-        type: 'tournaments/error',
-        payload: { entities: [], status: 'rejected' },
-      })
+      dispatch(errorTournament())
     }
   }
 
@@ -80,7 +75,7 @@ export const patchTournament =
       body: JSON.stringify({ name: editedName }),
     })
     await response.json()
-    const state = getState()
+    const { tournaments } = getState()
 
     // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
     // Not the best approach: we should create a popup msg to the user that the updates didn't work
@@ -88,12 +83,9 @@ export const patchTournament =
     if (response.status >= 200 && response.status <= 299) {
       dispatch({
         type: 'tournament/edit/loaded',
-        payload: { entities: state.tournaments.entities, status: 'idle' },
+        payload: { entities: tournaments.entities, status: 'idle' },
       })
     } else {
-      dispatch({
-        type: 'tournaments/error',
-        payload: { entities: [], status: 'rejected' },
-      })
+      dispatch(errorTournament())
     }
   }

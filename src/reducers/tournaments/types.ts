@@ -24,16 +24,18 @@ export interface TournamentsState {
   status?: 'loading' | 'idle' | 'rejected'
 }
 
+export type TournamentActionType =
+  | 'tournaments/loaded'
+  | 'tournaments/error'
+  | 'tournaments/loading'
+  | 'tournament/edit'
+  | 'tournament/edit/loaded'
+  | 'tournament/delete'
+  | 'tournament/delete/loaded'
+  | 'tournament/searched/loaded'
+  | 'tournament/creation'
+
 export interface TournamentsAction {
-  type:
-    | 'tournaments/loaded'
-    | 'tournaments/error'
-    | 'tournaments/loading'
-    | 'tournament/edit'
-    | 'tournament/edit/loaded'
-    | 'tournament/delete'
-    | 'tournament/delete/loaded'
-    | 'tournament/searched/loaded'
-    | 'tournament/creation'
+  type: TournamentActionType
   payload: TournamentsState
 }

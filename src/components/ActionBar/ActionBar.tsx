@@ -31,10 +31,6 @@ export const ActionBar = () => {
 
   useEffect(() => {
     if (typeof searched === 'string') {
-      dispatch({
-        type: 'tournaments/loading',
-        payload: { entities: [], status: 'loading' },
-      })
       dispatch(searchTournaments({ searched }))
     }
   }, [searched, dispatch])
