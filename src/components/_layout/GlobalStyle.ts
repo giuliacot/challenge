@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 import { normalize } from 'polished'
-import theme from './theme'
+import theme from '../../common/theme'
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   ${normalize};
 
   body {
@@ -12,5 +12,3 @@ const GlobalStyle = createGlobalStyle`
     ${theme.typography.body};
   }
 `
-
-export default GlobalStyle

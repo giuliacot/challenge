@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import React from 'react'
 import { fakeTournaments, renderWithProviders } from '../../utils/test-utils'
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
-import { App } from '../../App'
+import { App } from '../App'
 import userEvent from '@testing-library/user-event'
 import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 
