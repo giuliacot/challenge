@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import theme from '../theme'
-import Button from './atoms/Button'
-import Input from './atoms/Input'
+import theme from '../../theme'
+import Button from '../atoms/Button'
+import Input from '../atoms/Input'
 
 import { useDebouncedCallback } from 'use-debounce'
-import { useAppDispatch, useAppSelector } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
   checkTournamentNameOnlyAllowedChars,
   createTournament,
   searchTournaments,
-} from '../reducers/tournaments/tournaments'
+} from '../../reducers/tournaments/tournaments'
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -27,10 +27,13 @@ export const ActionBar = () => {
 
   const debouncedSearch = useDebouncedCallback((value) => {
     setSearchTournament(value)
-  }, 300)
+  }, 1000)
 
   useEffect(() => {
-    if (typeof searched === 'string') {
+    if (
+      typeof searched === 'string' &&
+      checkTournamentNameOnlyAllowedChars.test(searched)
+    ) {
       dispatch({
         type: 'tournaments/loading',
         payload: { entities: [], status: 'loading' },
@@ -53,6 +56,7 @@ export const ActionBar = () => {
   return (
     <ActionBarWrapper>
       <Input
+        data-testid="searchTournament"
         placeholder={'Search tournament...'}
         type="text"
         onChange={(e) => debouncedSearch(e.target.value)}
