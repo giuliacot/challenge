@@ -72,7 +72,6 @@ export const tournamentsReducer = (
 ) => {
   switch (action.type) {
     case 'tournaments/loading': {
-      console.log(3)
       return {
         entities: action.payload.entities,
         status: action.payload.status,
@@ -109,7 +108,6 @@ export const tournamentsReducer = (
       return { ...action.payload }
     }
     case 'tournament/searched/loaded': {
-      console.log(4)
       return {
         ...state,
         entities: action.payload.entities,
