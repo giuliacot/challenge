@@ -1,23 +1,9 @@
 import '@testing-library/jest-dom'
-// NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
 import * as React from 'react'
 import { screen } from '@testing-library/react'
 import { Tournaments } from './Tournaments'
-import { renderWithProviders } from '../../utils/test-utils'
-
-const fakeTournaments = [
-  {
-    id: 'tournament1',
-    name: 'tournamentName1',
-    game: 'tournamentGame1',
-  },
-  {
-    id: 'tournament2',
-    name: 'tournamentName2',
-    game: 'tournamentGame2',
-  },
-]
+import { fakeTournaments, renderWithProviders } from '../../utils/test-utils'
 
 describe('Tournaments component tests: ', () => {
   test('during the tournaments fetching, the app must render a loader', () => {
