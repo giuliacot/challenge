@@ -19,6 +19,7 @@ const ActionBarWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: ${theme.spacing(4)};
 `
+export const DEBOUNCE_TIMEOUT = 800
 
 export const ActionBar = () => {
   const [searched, setSearchTournament] = useState<string | null>(null)
@@ -27,7 +28,7 @@ export const ActionBar = () => {
 
   const debouncedSearch = useDebouncedCallback((value) => {
     setSearchTournament(value)
-  }, 1000)
+  }, DEBOUNCE_TIMEOUT)
 
   useEffect(() => {
     if (

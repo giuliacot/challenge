@@ -1,15 +1,14 @@
 import '@testing-library/jest-dom'
 import React from 'react'
 import { fakeTournaments, renderWithProviders } from '../../utils/test-utils'
-import {
-  fireEvent,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { App } from '../../App'
+import userEvent from '@testing-library/user-event'
+import { DEBOUNCE_TIMEOUT } from './ActionBar'
 
 describe('ActionBar component tests: ', () => {
   test('given a search string, the app must show a loading state', async () => {
+    const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {
       preloadedState: {
         tournaments: {
@@ -18,18 +17,12 @@ describe('ActionBar component tests: ', () => {
         },
       },
     })
-
-    // simulate onchange on input
-    fireEvent.change(screen.getByTestId('searchTournament'), {
-      target: { value: 'ab' },
-    })
-
-    waitForElementToBeRemoved(() => screen.queryByText(/tournamentName1/i))
-
+    await user.type(screen.getByTestId('searchTournament'), 'Load')
     expect(await screen.findByText(/Loading tournament/i)).toBeInTheDocument()
-  })
+  }, 10000)
 
   test("given a search string, if the search doesn't had result, show empty state", async () => {
+    const user = userEvent.setup()
     renderWithProviders(<App />, {
       preloadedState: {
         tournaments: {
@@ -40,22 +33,14 @@ describe('ActionBar component tests: ', () => {
     })
 
     // simulate onchange on search input
-    fireEvent.change(screen.getByTestId('searchTournament'), {
-      target: { value: 'fakeSearch' },
-    })
-
+    await user.type(screen.getByTestId('searchTournament'), 'fake')
     await screen.findByText(/Loading tournament/i)
-
-    waitForElementToBeRemoved(() =>
-      screen.queryByText(/Loading tournament/i)
-    ).then(() => {
-      console.log('Loading ended.')
-    })
-
+    waitForElementToBeRemoved(() => screen.queryByText(/Loading tournament/i))
     expect(await screen.findByText(/No tournaments found/i)).toBeInTheDocument()
   })
 
   test('given an invalid search string, dispatch must not be called', async () => {
+    const user = userEvent.setup()
     renderWithProviders(<App />, {
       preloadedState: {
         tournaments: {
@@ -65,15 +50,12 @@ describe('ActionBar component tests: ', () => {
       },
     })
 
-    // simulate onchange on search input
-    fireEvent.change(screen.getByTestId('searchTournament'), {
-      target: { value: '$|@' },
-    })
-
+    await user.type(screen.getByTestId('searchTournament'), '$|@')
     expect(screen.queryByText(/Loading tournament/i)).toBeNull()
   })
 
   test('given a search string, the app must show an error if fetching is failing', async () => {
+    const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {
       preloadedState: {
         tournaments: {
@@ -84,10 +66,7 @@ describe('ActionBar component tests: ', () => {
     })
 
     // simulate onchange on search input
-    fireEvent.change(screen.getByTestId('searchTournament'), {
-      target: { value: 'Error' },
-    })
-
+    await user.type(screen.getByTestId('searchTournament'), 'Err')
     expect(await screen.findByText(/Something went wrong/i)).toBeInTheDocument()
-  })
+  }, 5000)
 })
