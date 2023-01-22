@@ -11,7 +11,7 @@ export const Tournaments = () => {
   const { entities, status } = useAppSelector((state) => state.tournaments)
 
   useMemo(() => {
-    dispatch<any>(fetchTournaments())
+    dispatch(fetchTournaments())
   }, [dispatch])
 
   return (

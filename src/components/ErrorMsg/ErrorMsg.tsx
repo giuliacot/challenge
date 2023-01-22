@@ -17,7 +17,7 @@ export const ErrorMsg = () => {
   const dispatch = useAppDispatch()
 
   function handleRetry() {
-    dispatch<any>(fetchTournaments())
+    dispatch(fetchTournaments())
   }
 
   return (

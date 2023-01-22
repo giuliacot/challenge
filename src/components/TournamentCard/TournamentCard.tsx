@@ -2,22 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { deleteTournament, patchTournament } from '../../actions/tournament'
 import { useAppDispatch } from '../../common/hooks'
-import { checkTournamentNameOnlyAllowedChars } from '../../reducers/tournaments/tournaments'
+
 import { isTournament, Tournament } from '../../reducers/tournaments/types'
 import { Button } from '../_atoms/Button'
 import { Card } from '../_atoms/Card'
 import { H6 } from '../_atoms/H6'
 import theme from '../../common/theme'
-
-// TODO: moves to utils class
-const options: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-}
+import { options } from '../../utils/dateFormatOption'
+import { checkTournamentNameOnlyAllowedChars } from '../../utils/inputValidation'
 
 const CardText = styled.p`
   margin: 0;
@@ -37,12 +29,11 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       name: string,
       id: string
     ) => {
-      // add error msg if check is not passed
-
+      // TODO add error msg if check is not passed
       const editedName = window.prompt('New tournament name:', name)
 
       if (editedName && checkTournamentNameOnlyAllowedChars.test(editedName)) {
-        dispatch<any>(patchTournament({ id, editedName }))
+        dispatch(patchTournament({ id, editedName }))
         dispatch({
           type: 'tournament/edit',
           payload: { entities: [{ id, name: editedName }] },
@@ -59,7 +50,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         'Do you really want to delete this tournament?'
       )
       if (userReply) {
-        dispatch<any>(deleteTournament({ id }))
+        dispatch(deleteTournament({ id }))
         dispatch({
           type: 'tournament/delete',
           payload: { entities: [{ id, name }] },
