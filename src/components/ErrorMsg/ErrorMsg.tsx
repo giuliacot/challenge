@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { fetchTournaments } from '../reducers/tournaments/tournaments'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import theme from '../theme'
-import Button from './atoms/Button'
-import { MainContent } from './layout/MainContent'
+import { fetchTournaments } from '../../reducers/tournaments/tournaments'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import theme from '../../theme'
+import Button from '../_atoms/Button'
+import { MainContent } from '../_layout/MainContent'
 
 const ErrorMsgWrapper = styled.div`
   width: 100%;

@@ -4,7 +4,7 @@ import { fakeTournaments, renderWithProviders } from '../../utils/test-utils'
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { App } from '../../App'
 import userEvent from '@testing-library/user-event'
-import { DEBOUNCE_TIMEOUT } from './ActionBar'
+import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 
 describe('ActionBar component tests: ', () => {
   test('given a search string, the app must show a loading state', async () => {

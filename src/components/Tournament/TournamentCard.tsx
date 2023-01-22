@@ -9,9 +9,9 @@ import {
   Tournament,
 } from '../../reducers/tournaments/tournaments'
 import theme from '../../theme'
-import Button from '../atoms/Button'
-import { Card } from '../atoms/Card'
-import H6 from '../atoms/H6'
+import Button from '../_atoms/Button'
+import { Card } from '../_atoms/Card'
+import H6 from '../_atoms/H6'
 
 // TODO: moves to utils class
 const options: Intl.DateTimeFormatOptions = {

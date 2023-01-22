@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import theme from '../../theme'
-import Button from '../atoms/Button'
-import Input from '../atoms/Input'
+import Button from '../_atoms/Button'
+import Input from '../_atoms/Input'
 
 import { useDebouncedCallback } from 'use-debounce'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -11,6 +11,7 @@ import {
   createTournament,
   searchTournaments,
 } from '../../reducers/tournaments/tournaments'
+import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -19,7 +20,6 @@ const ActionBarWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: ${theme.spacing(4)};
 `
-export const DEBOUNCE_TIMEOUT = 800
 
 export const ActionBar = () => {
   const [searched, setSearchTournament] = useState<string | null>(null)
