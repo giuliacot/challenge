@@ -1,17 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useAppDispatch } from '../../hooks'
-import {
-  checkTournamentNameOnlyAllowedChars,
-  deleteTournament,
-  isTournament,
-  patchTournament,
-  Tournament,
-} from '../../reducers/tournaments/tournaments'
-import theme from '../../theme'
-import Button from '../_atoms/Button'
+import { deleteTournament, patchTournament } from '../../actions/tournament'
+import { useAppDispatch } from '../../common/hooks'
+import { checkTournamentNameOnlyAllowedChars } from '../../reducers/tournaments/tournaments'
+import { isTournament, Tournament } from '../../reducers/tournaments/types'
+import { Button } from '../_atoms/Button'
 import { Card } from '../_atoms/Card'
-import H6 from '../_atoms/H6'
+import { H6 } from '../_atoms/H6'
+import theme from '../../common/theme'
 
 // TODO: moves to utils class
 const options: Intl.DateTimeFormatOptions = {

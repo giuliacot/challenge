@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { fetchTournaments } from '../../reducers/tournaments/tournaments'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../common/hooks'
 import { CardsGrid } from '../_layout/CardsGrid'
 import { ErrorMsg } from '../ErrorMsg/ErrorMsg'
-import { TournamentCard } from './TournamentCard'
+import { TournamentCard } from '../TournamentCard/TournamentCard'
 import { MainContent } from '../_layout/MainContent'
+import { fetchTournaments } from '../../actions/tournaments'
 
 export const Tournaments = () => {
   const dispatch = useAppDispatch()

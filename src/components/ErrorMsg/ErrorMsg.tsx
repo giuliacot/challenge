@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { fetchTournaments } from '../../reducers/tournaments/tournaments'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import theme from '../../theme'
-import Button from '../_atoms/Button'
+import { fetchTournaments } from '../../actions/tournaments'
+import { useAppDispatch } from '../../common/hooks'
+import { Button } from '../_atoms/Button'
 import { MainContent } from '../_layout/MainContent'
 
 const ErrorMsgWrapper = styled.div`

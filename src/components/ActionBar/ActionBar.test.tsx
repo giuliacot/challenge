@@ -39,21 +39,6 @@ describe('ActionBar component tests: ', () => {
     expect(await screen.findByText(/No tournaments found/i)).toBeInTheDocument()
   })
 
-  test('given an invalid search string, dispatch must not be called', async () => {
-    const user = userEvent.setup()
-    renderWithProviders(<App />, {
-      preloadedState: {
-        tournaments: {
-          entities: fakeTournaments,
-          status: 'idle',
-        },
-      },
-    })
-
-    await user.type(screen.getByTestId('searchTournament'), '$|@')
-    expect(screen.queryByText(/Loading tournament/i)).toBeNull()
-  })
-
   test('given a search string, the app must show an error if fetching is failing', async () => {
     const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {

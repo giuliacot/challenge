@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import theme from '../../theme'
+import theme from '../../common/theme'
 
 export const CardsGrid = styled.ul`
   display: grid;
@@ -14,9 +14,3 @@ export const CardsGrid = styled.ul`
     grid-template-columns: 1fr;
   }
 `
-
-// container
-
-// actions or menu
-
-// card grid

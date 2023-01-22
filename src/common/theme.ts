@@ -69,6 +69,6 @@ const theme = {
     xl: '1200px',
     xxl: '1620px',
   },
-};
+}
 
-export default theme;
+export default theme

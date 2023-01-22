@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import theme from '../../theme'
+import theme from '../../common/theme'
 
 export const Card = styled.li`
   background: ${theme.palette.background.alt1};

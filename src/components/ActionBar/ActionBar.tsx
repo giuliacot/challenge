@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import theme from '../../theme'
-import Button from '../_atoms/Button'
-import Input from '../_atoms/Input'
+import { Button } from '../_atoms/Button'
+import { Input } from '../_atoms/Input'
+import theme from '../../common/theme'
 
 import { useDebouncedCallback } from 'use-debounce'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import {
-  checkTournamentNameOnlyAllowedChars,
-  createTournament,
-  searchTournaments,
-} from '../../reducers/tournaments/tournaments'
+import { useAppDispatch, useAppSelector } from '../../common/hooks'
+import { checkTournamentNameOnlyAllowedChars } from '../../reducers/tournaments/tournaments'
 import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
+import { searchTournaments } from '../../actions/tournaments'
+import { createTournament } from '../../actions/tournament'
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -31,10 +29,7 @@ export const ActionBar = () => {
   }, DEBOUNCE_TIMEOUT)
 
   useEffect(() => {
-    if (
-      typeof searched === 'string' &&
-      checkTournamentNameOnlyAllowedChars.test(searched)
-    ) {
+    if (typeof searched === 'string') {
       dispatch({
         type: 'tournaments/loading',
         payload: { entities: [], status: 'loading' },
