@@ -7,7 +7,7 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
 
-  @media all and (max-width: ${theme.breakpoints.s}) {
+  @media all and (max-width: ${theme.breakpoints.l}) {
     margin-left: ${theme.spacing(4)};
     margin-right: ${theme.spacing(4)};
   }
