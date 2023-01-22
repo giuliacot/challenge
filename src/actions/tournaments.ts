@@ -25,7 +25,7 @@ export const fetchTournaments =
 
     if (response.ok) {
       dispatch({
-        type: 'tournaments/loaded',
+        type: 'tournaments/fetch/success',
         payload: { entities: result, status: 'idle' },
       })
     } else {

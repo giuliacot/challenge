@@ -28,13 +28,14 @@ export const tournamentsReducer = (
         status: action.payload.status,
       }
     }
-    case 'tournaments/loaded': {
+    case 'tournaments/fetch/success': {
       return { ...action.payload }
     }
     case 'tournaments/error': {
       return { ...action.payload }
     }
     case 'tournament/edit': {
+      // TODO: improve with only one tournament to load not the entire array
       const toUpdateId = action.payload.entities[0].id
       const editedName = action.payload.entities[0].name
 

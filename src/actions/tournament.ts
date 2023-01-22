@@ -1,8 +1,19 @@
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../constants/api'
-import { TournamentsAction } from '../reducers/tournaments/types'
+import { Tournament, TournamentsAction } from '../reducers/tournaments/types'
 import { RootState } from '../store'
 import { errorTournament } from './tournaments'
+
+export const editLocalTournament: (toEdit: Tournament) => TournamentsAction = (
+  toEdit
+) => {
+  return {
+    type: 'tournament/edit',
+    payload: { entities: [toEdit], status: 'idle' },
+  }
+}
+
+// TODO: create tournament
 
 export const createTournament =
   ({

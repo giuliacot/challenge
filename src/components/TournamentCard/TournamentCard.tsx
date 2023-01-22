@@ -1,6 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { deleteTournament, patchTournament } from '../../actions/tournament'
+import {
+  deleteTournament,
+  editLocalTournament,
+  patchTournament,
+} from '../../actions/tournament'
 import { useAppDispatch } from '../../common/hooks'
 
 import { isTournament, Tournament } from '../../reducers/tournaments/types'
@@ -33,11 +37,9 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       const editedName = window.prompt('New tournament name:', name)
 
       if (editedName && checkTournamentNameOnlyAllowedChars.test(editedName)) {
+        // TODO: improves readibility
+        dispatch(editLocalTournament({ id, name: editedName }))
         dispatch(patchTournament({ id, editedName }))
-        dispatch({
-          type: 'tournament/edit',
-          payload: { entities: [{ id, name: editedName }] },
-        })
       }
     }
     // TODO: removes useless name

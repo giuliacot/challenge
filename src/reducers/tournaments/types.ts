@@ -25,7 +25,7 @@ export interface TournamentsState {
 }
 
 export type TournamentActionType =
-  | 'tournaments/loaded'
+  | 'tournaments/fetch/success'
   | 'tournaments/error'
   | 'tournaments/loading'
   | 'tournament/edit'
