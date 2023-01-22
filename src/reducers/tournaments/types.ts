@@ -19,7 +19,7 @@ export function isTournament(
   )
 }
 
-export interface InitialState {
+export interface TournamentsState {
   entities: Tournament[]
   status?: 'loading' | 'idle' | 'rejected'
 }
@@ -35,5 +35,5 @@ export interface TournamentsAction {
     | 'tournament/delete/loaded'
     | 'tournament/searched/loaded'
     | 'tournament/creation'
-  payload: InitialState
+  payload: TournamentsState
 }

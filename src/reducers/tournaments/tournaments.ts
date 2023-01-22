@@ -1,25 +1,21 @@
-import { InitialState, TournamentsAction } from './types'
+import { TournamentsState, TournamentsAction } from './types'
 
-const initialState: InitialState = {
+const initialState: TournamentsState = {
   entities: [],
   status: 'loading',
 }
 
-/** Utils */
 const updatesTournamentName = (
-  state: InitialState,
+  state: TournamentsState,
   id: string,
   name: string
 ) => {
   return state.entities.map((t) => (t.id === id ? { ...t, name } : t))
 }
 
-const removeTournament = (state: InitialState, id: string) => {
+const removeTournament = (state: TournamentsState, id: string) => {
   return state.entities.filter((t) => t.id !== id)
 }
-/***/
-
-export const checkTournamentNameOnlyAllowedChars = new RegExp(/[a-zA-Z0-9\s]+$/)
 
 export const tournamentsReducer = (
   state = initialState,
