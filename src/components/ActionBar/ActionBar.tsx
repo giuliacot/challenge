@@ -6,10 +6,11 @@ import theme from '../../common/theme'
 
 import { useDebouncedCallback } from 'use-debounce'
 import { useAppDispatch, useAppSelector } from '../../common/hooks'
-import { checkTournamentNameOnlyAllowedChars } from '../../reducers/tournaments/tournaments'
+
 import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 import { searchTournaments } from '../../actions/tournaments'
 import { createTournament } from '../../actions/tournament'
+import { checkTournamentNameOnlyAllowedChars } from '../../utils/inputValidation'
 
 const ActionBarWrapper = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ export const ActionBar = () => {
         type: 'tournaments/loading',
         payload: { entities: [], status: 'loading' },
       })
-      dispatch<any>(searchTournaments({ searched }))
+      dispatch(searchTournaments({ searched }))
     }
   }, [searched, dispatch])
 
@@ -45,7 +46,7 @@ export const ActionBar = () => {
       newTournament &&
       checkTournamentNameOnlyAllowedChars.test(newTournament)
     ) {
-      dispatch<any>(createTournament({ newTournament }))
+      dispatch(createTournament({ newTournament }))
     }
   }
 
