@@ -20,6 +20,12 @@ const ActionBarWrapper = styled.div`
   margin-bottom: ${theme.spacing(4)};
 `
 
+const SearchInput = styled(Input)`
+  &:disabled {
+    color: ${theme.palette.text.secondary};
+  }
+`
+
 export const ActionBar = () => {
   const [searched, setSearchTournament] = useState<string | null>(null)
   const dispatch = useAppDispatch()
@@ -47,11 +53,12 @@ export const ActionBar = () => {
 
   return (
     <ActionBarWrapper>
-      <Input
+      <SearchInput
         data-testid="searchTournamentInput"
         placeholder={'Search tournament...'}
         type="text"
         onChange={(e) => debouncedSearch(e.target.value)}
+        disabled={status === 'loading'}
         tabIndex={1}
       />
       <Button

@@ -23,6 +23,7 @@ const theme = {
     },
     text: {
       primary: '#FFF',
+      secondary: '#626262',
     },
   },
   spacing: (multiplier = 1) => `${4 * multiplier}px`,
