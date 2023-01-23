@@ -22,17 +22,17 @@ export const tournamentsReducer = (
   action: TournamentsAction
 ) => {
   switch (action.type) {
+    case 'tournaments/fetch/success': {
+      return { ...state, ...action.payload }
+    }
     case 'tournaments/loading': {
       return {
         entities: action.payload.entities,
         status: action.payload.status,
       }
     }
-    case 'tournaments/fetch/success': {
-      return { ...action.payload }
-    }
     case 'tournaments/error': {
-      return { ...action.payload }
+      return { ...state, ...action.payload }
     }
     case 'tournament/edit': {
       // TODO: improve with only one tournament to load not the entire array
@@ -45,7 +45,7 @@ export const tournamentsReducer = (
       }
     }
     case 'tournament/edit/loaded': {
-      return { ...action.payload }
+      return { ...state, ...action.payload }
     }
     case 'tournament/delete': {
       const toDeleteId = action.payload.entities[0].id
@@ -55,16 +55,14 @@ export const tournamentsReducer = (
       }
     }
     case 'tournament/delete/loaded': {
-      return { ...action.payload }
+      return { ...state, ...action.payload }
     }
     case 'tournament/searched/loaded': {
       return {
         ...state,
-        entities: action.payload.entities,
-        status: action.payload.status,
+        ...action.payload,
       }
     }
-
     case 'tournament/creation': {
       return {
         ...state,
