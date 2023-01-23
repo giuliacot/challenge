@@ -97,12 +97,14 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         </CardInfo>
         <div>
           <Button
+            tabIndex={0}
             data-testid={`editTournamentBtn-${id}`}
             onClick={(e) => handleEdit(e, name, id)}
           >
             Edit
           </Button>
           <Button
+            tabIndex={0}
             data-testid={`deleteTournamentBtn-${id}`}
             onClick={(e) => handleDelete(e, name, id)}
           >
