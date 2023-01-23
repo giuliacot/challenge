@@ -5,6 +5,7 @@ import { ErrorMsg } from '../ErrorMsg/ErrorMsg'
 import { TournamentCard } from '../TournamentCard/TournamentCard'
 import { MainContent } from '../_layout/MainContent'
 import { fetchTournaments } from '../../actions/tournaments'
+import { Loader } from '../Loader/Loader'
 
 export const Tournaments = () => {
   const dispatch = useAppDispatch()
@@ -16,9 +17,7 @@ export const Tournaments = () => {
 
   return (
     <>
-      {status === 'loading' && (
-        <MainContent>Loading tournaments ...</MainContent>
-      )}
+      {status === 'loading' && <Loader />}
       {status === 'rejected' && <ErrorMsg />}
       {status === 'idle' && entities.length === 0 && (
         <MainContent>No tournaments found</MainContent>
