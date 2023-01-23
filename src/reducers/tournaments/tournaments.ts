@@ -8,7 +8,7 @@ const initialState: TournamentsState = {
 const updatesTournamentName = (
   state: TournamentsState,
   id: string,
-  name: string
+  name?: string
 ) => {
   return state.entities.map((t) => (t.id === id ? { ...t, name } : t))
 }
@@ -35,13 +35,11 @@ export const tournamentsReducer = (
       return { ...state, ...action.payload }
     }
     case 'tournament/edit': {
-      // TODO: improve with only one tournament to load not the entire array
-      const toUpdateId = action.payload.entities[0].id
-      const editedName = action.payload.entities[0].name
+      const toUpdate = action.payload.entities[0]
 
       return {
         ...state,
-        entities: updatesTournamentName(state, toUpdateId, editedName),
+        entities: updatesTournamentName(state, toUpdate.id, toUpdate.name),
       }
     }
     case 'tournament/edit/loaded': {

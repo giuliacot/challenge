@@ -56,7 +56,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         dispatch(patchTournament({ id, editedName }))
       }
     }
-    // TODO: removes useless name
+
     const handleDelete = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
       name: string,
