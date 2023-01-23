@@ -1,8 +1,12 @@
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../constants/api'
-import { Tournament, TournamentsAction } from '../reducers/tournaments/types'
+import {
+  Tournament,
+  TournamentsAction,
+  TournamentsState,
+} from '../reducers/tournaments/types'
 import { RootState } from '../store'
-import { errorTournament } from './tournaments'
+import { errorTournaments } from './tournaments'
 
 export const editLocalTournament: (toEdit: Tournament) => TournamentsAction = (
   toEdit
@@ -13,7 +17,35 @@ export const editLocalTournament: (toEdit: Tournament) => TournamentsAction = (
   }
 }
 
-// TODO: create tournament
+export const deleteTournamentAction: (
+  state: TournamentsState
+) => TournamentsAction = (state) => {
+  return {
+    type: 'tournament/delete/loaded',
+    payload: {
+      entities: state.entities,
+    },
+  }
+}
+
+export const editTournament: (edited: Tournament[]) => TournamentsAction = (
+  edited
+) => {
+  return {
+    type: 'tournament/edit/loaded',
+    payload: { entities: edited, status: 'idle' },
+  }
+}
+
+export const addTournament: (
+  newTournament: Tournament,
+  tournaments: Tournament[]
+) => TournamentsAction = (newTournament, tournaments) => {
+  return {
+    type: 'tournament/creation',
+    payload: { entities: [...tournaments, newTournament], status: 'idle' },
+  }
+}
 
 export const createTournament =
   ({
@@ -31,15 +63,9 @@ export const createTournament =
     const { tournaments } = getState()
 
     if (response.ok) {
-      dispatch({
-        type: 'tournament/creation',
-        payload: {
-          entities: [...tournaments.entities, result],
-          status: 'idle',
-        },
-      })
+      dispatch(addTournament(result, tournaments.entities))
     } else {
-      dispatch(errorTournament())
+      dispatch(errorTournaments())
     }
   }
 
@@ -57,15 +83,9 @@ export const deleteTournament =
     const { tournaments } = getState()
 
     if (response.ok) {
-      dispatch({
-        type: 'tournament/delete/loaded',
-        payload: {
-          entities: tournaments.entities,
-          status: tournaments.status,
-        },
-      })
+      dispatch(deleteTournamentAction(tournaments))
     } else {
-      dispatch(errorTournament())
+      dispatch(errorTournaments())
     }
   }
 
@@ -92,11 +112,8 @@ export const patchTournament =
     // Not the best approach: we should create a popup msg to the user that the updates didn't work
 
     if (response.ok) {
-      dispatch({
-        type: 'tournament/edit/loaded',
-        payload: { entities: tournaments.entities, status: 'idle' },
-      })
+      dispatch(editTournament(tournaments.entities))
     } else {
-      dispatch(errorTournament())
+      dispatch(errorTournaments())
     }
   }
