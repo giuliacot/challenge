@@ -62,8 +62,6 @@ export const createTournament =
     const result = (await response.json()) as Tournament
     const { tournaments } = getState()
 
-    console.log(5, result)
-
     if (response.ok) {
       dispatch(addTournament(result, tournaments.entities))
     } else {
