@@ -7,12 +7,6 @@ import { keyframes } from 'styled-components'
  * w: http://animista.net, t: @cssanimista
  * ---------------------------------------------- */
 
-/**
- * ----------------------------------------
- * animation heartbeat
- * ----------------------------------------
- */
-
 export const blink = keyframes` {
   0%,
   50%,
@@ -24,3 +18,27 @@ export const blink = keyframes` {
     opacity: 0;
   }
 }`
+
+export const slideLeft = keyframes`{
+  0% {
+    transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+`
+
+export const slideRight = keyframes`{
+  0% {
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+`

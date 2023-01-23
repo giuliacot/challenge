@@ -45,8 +45,8 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
 
     const handleEdit = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      name: string,
-      id: string
+      id: string,
+      name?: string
     ) => {
       // TO IMPROVE: notifing the user if the check is not passed
       const editedName = window.prompt('New tournament name:', name)
@@ -59,8 +59,8 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
 
     const handleDelete = (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      name: string,
-      id: string
+      id: string,
+      name?: string
     ) => {
       const userReply = window.confirm(
         'Do you really want to delete this tournament?'
@@ -96,14 +96,14 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
           <Button
             tabIndex={0}
             data-testid={`editTournamentBtn-${id}`}
-            onClick={(e) => handleEdit(e, name, id)}
+            onClick={(e) => handleEdit(e, id, name)}
           >
             Edit
           </Button>
           <Button
             tabIndex={0}
             data-testid={`deleteTournamentBtn-${id}`}
-            onClick={(e) => handleDelete(e, name, id)}
+            onClick={(e) => handleDelete(e, id, name)}
           >
             Delete
           </Button>
