@@ -17,9 +17,9 @@ describe('ActionBar component tests: ', () => {
         },
       },
     })
-    await user.type(screen.getByTestId('searchTournament'), 'Load')
+    await user.type(screen.getByTestId('searchTournamentInput'), 'Load')
     expect(await screen.findByText(/Loading tournament/i)).toBeInTheDocument()
-  }, 10000)
+  }, 9000)
 
   test("given a search string, if the search doesn't had result, show empty state", async () => {
     const user = userEvent.setup()
@@ -33,7 +33,7 @@ describe('ActionBar component tests: ', () => {
     })
 
     // simulate onchange on search input
-    await user.type(screen.getByTestId('searchTournament'), 'fake')
+    await user.type(screen.getByTestId('searchTournamentInput'), 'fake')
     await screen.findByText(/Loading tournament/i)
     waitForElementToBeRemoved(() => screen.queryByText(/Loading tournament/i))
     expect(await screen.findByText(/No tournaments found/i)).toBeInTheDocument()
@@ -51,7 +51,59 @@ describe('ActionBar component tests: ', () => {
     })
 
     // simulate onchange on search input
-    await user.type(screen.getByTestId('searchTournament'), 'Err')
+    await user.type(screen.getByTestId('searchTournamentInput'), 'Err')
     expect(await screen.findByText(/Something went wrong/i)).toBeInTheDocument()
   }, 5000)
+
+  test('given a click on the create tournament button, the app must a window prompt to insert the new tournament', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<App />, {
+      preloadedState: {
+        tournaments: {
+          entities: fakeTournaments,
+          status: 'idle',
+        },
+      },
+    })
+    window.prompt = jest.fn().mockImplementation(() => true)
+
+    await user.click(screen.getByTestId('createTournamentBtn'))
+    expect(window.prompt).toHaveBeenCalled()
+  })
+
+  test('given a click on the create tournament button and added a valid tournament name, the app must shown the new tournament', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<App />, {
+      preloadedState: {
+        tournaments: {
+          entities: fakeTournaments,
+          status: 'idle',
+        },
+      },
+    })
+
+    window.prompt = jest.fn().mockImplementation(() => 'fake new tounrnament')
+
+    await user.click(screen.getByTestId('createTournamentBtn'))
+
+    expect(await screen.findByText('fake new tounrnament')).toBeInTheDocument()
+  })
+
+  test('given a click on the create tournament button and clicking a "Cancel", the app must do nothing', async () => {
+    const user = userEvent.setup()
+
+    renderWithProviders(<App />, {
+      preloadedState: {
+        tournaments: {
+          entities: fakeTournaments,
+          status: 'idle',
+        },
+      },
+    })
+
+    window.prompt = jest.fn().mockImplementation(() => null)
+
+    await user.click(screen.getByTestId('createTournamentBtn'))
+    expect(await screen.findAllByText(/tournamentName/i)).toHaveLength(2)
+  })
 })

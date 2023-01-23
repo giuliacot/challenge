@@ -49,13 +49,16 @@ export const ActionBar = () => {
   return (
     <ActionBarWrapper>
       <Input
-        data-testid="searchTournament"
+        data-testid="searchTournamentInput"
         placeholder={'Search tournament...'}
         type="text"
         onChange={(e) => debouncedSearch(e.target.value)}
         disabled={status === 'loading'}
       />
-      <Button onClick={() => handleCreationTournament()}>
+      <Button
+        data-testid="createTournamentBtn"
+        onClick={() => handleCreationTournament()}
+      >
         Create Tournament
       </Button>
     </ActionBarWrapper>
