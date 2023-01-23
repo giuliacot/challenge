@@ -1,4 +1,4 @@
-import { TournamentsState, TournamentsAction } from './types'
+import { TournamentsState, TournamentsAction } from '../types'
 
 const initialState: TournamentsState = {
   entities: [],
