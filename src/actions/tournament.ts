@@ -28,6 +28,17 @@ export const deleteTournamentAction: (
   }
 }
 
+export const removeLocalTournament: (
+  tournament: Tournament
+) => TournamentsAction = (tournament) => {
+  return {
+    type: 'tournament/delete',
+    payload: {
+      entities: [tournament],
+    },
+  }
+}
+
 export const editTournament: (edited: Tournament[]) => TournamentsAction = (
   edited
 ) => {
@@ -107,9 +118,6 @@ export const patchTournament =
     })
     await response.json()
     const { tournaments } = getState()
-
-    // TODO: When confirming, the tournament name will be updated immediately using an optimistic update in the UI and a fetch call on the fake REST API. => if we have some error how to notify that to the user?
-    // Not the best approach: we should create a popup msg to the user that the updates didn't work
 
     if (response.ok) {
       dispatch(editTournament(tournaments.entities))

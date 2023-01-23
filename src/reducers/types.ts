@@ -1,6 +1,6 @@
 export type Tournament = {
   id: string
-  name: string
+  name?: string
   organizer?: string
   game?: string
   participants?: {
@@ -13,10 +13,7 @@ export type Tournament = {
 export function isTournament(
   tournament: Tournament | {}
 ): tournament is Tournament {
-  return (
-    (tournament as Tournament).id !== undefined &&
-    (tournament as Tournament).name !== undefined
-  )
+  return (tournament as Tournament).id !== undefined
 }
 
 export interface TournamentsState {

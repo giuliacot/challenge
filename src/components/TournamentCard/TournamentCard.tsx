@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {
   deleteTournament,
+  removeLocalTournament,
   editLocalTournament,
   patchTournament,
 } from '../../actions/tournament'
@@ -47,11 +48,10 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       name: string,
       id: string
     ) => {
-      // TODO add error msg if check is not passed
+      // TO IMPROVE: notifing the user if the check is not passed
       const editedName = window.prompt('New tournament name:', name)
 
       if (editedName && checkTournamentNameOnlyAllowedChars.test(editedName)) {
-        // TODO: improves readibility
         dispatch(editLocalTournament({ id, name: editedName }))
         dispatch(patchTournament({ id, editedName }))
       }
@@ -67,10 +67,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       )
       if (userReply) {
         dispatch(deleteTournament({ id }))
-        dispatch({
-          type: 'tournament/delete',
-          payload: { entities: [{ id, name }] },
-        })
+        dispatch(removeLocalTournament({ id }))
       }
     }
 
