@@ -46,8 +46,17 @@ export const ActionBar = () => {
     const hasValidStringToSearch =
       newTournament && checkTournamentNameOnlyAllowedChars.test(newTournament)
 
+    console.log(checkTournamentNameOnlyAllowedChars.test(newTournament || ''))
+
     if (hasValidStringToSearch && status !== 'loading') {
+      window.confirm('Well done ✨ a new tournament created!')
       dispatch(createTournament({ newTournament }))
+    }
+
+    if (!hasValidStringToSearch) {
+      window.confirm(
+        "Oh no 🥺! You can't use special chars for new tournaments!"
+      )
     }
   }
 
