@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk'
 import { API_TOURNAMENTS_URL } from '../constants/api'
-import { Tournament, TournamentsAction } from '../reducers/tournaments/types'
+import { Tournament, TournamentsAction } from '../reducers/types'
 import { RootState } from '../store'
 
 export const loadingTournaments: () => TournamentsAction = () => {

@@ -4,7 +4,7 @@ import {
   Tournament,
   TournamentsAction,
   TournamentsState,
-} from '../reducers/tournaments/types'
+} from '../reducers/types'
 import { RootState } from '../store'
 import { errorTournaments } from './tournaments'
 
@@ -43,7 +43,7 @@ export const addTournament: (
 ) => TournamentsAction = (newTournament, tournaments) => {
   return {
     type: 'tournament/creation',
-    payload: { entities: [...tournaments, newTournament], status: 'idle' },
+    payload: { entities: [newTournament, ...tournaments], status: 'idle' },
   }
 }
 
@@ -59,8 +59,10 @@ export const createTournament =
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newTournament }),
     })
-    const result = await response.json()
+    const result = (await response.json()) as Tournament
     const { tournaments } = getState()
+
+    console.log(5, result)
 
     if (response.ok) {
       dispatch(addTournament(result, tournaments.entities))

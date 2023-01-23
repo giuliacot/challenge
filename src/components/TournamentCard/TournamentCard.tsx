@@ -7,7 +7,7 @@ import {
 } from '../../actions/tournament'
 import { useAppDispatch } from '../../common/hooks'
 
-import { isTournament, Tournament } from '../../reducers/tournaments/types'
+import { isTournament, Tournament } from '../../reducers/types'
 import { Button } from '../_atoms/Button'
 import { Card } from '../_atoms/Card'
 import { H6 } from '../_atoms/H6'
@@ -20,6 +20,20 @@ const CardText = styled.p`
 `
 const CardInfo = styled.div`
   margin-bottom: ${theme.spacing(2)};
+`
+
+const CardAnimation = styled(Card)`
+  display: inline-grid;
+  align-content: space-between;
+  animation: fade-in 0.8s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `
 
 export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
@@ -61,14 +75,17 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
     }
 
     return (
-      <Card>
+      <CardAnimation>
         <H6>{name}</H6>
         <CardInfo>
-          <CardText>Organizer: {organizer}</CardText>
-          <CardText>Game: {game}</CardText>
+          <CardText>Organizer: {organizer ?? '-'}</CardText>
+          <CardText>Game: {game ?? '-'}</CardText>
+
           <CardText>
-            Partecipants: {participants?.current}/{participants?.max}
+            Partecipants: {participants?.current ?? '-'}/
+            {participants?.max ?? '-'}
           </CardText>
+
           {startDate && (
             <CardText>
               Start:{' '}
@@ -78,19 +95,21 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
             </CardText>
           )}
         </CardInfo>
-        <Button
-          data-testid={`editTournamentBtn-${id}`}
-          onClick={(e) => handleEdit(e, name, id)}
-        >
-          Edit
-        </Button>
-        <Button
-          data-testid={`deleteTournamentBtn-${id}`}
-          onClick={(e) => handleDelete(e, name, id)}
-        >
-          Delete
-        </Button>
-      </Card>
+        <div>
+          <Button
+            data-testid={`editTournamentBtn-${id}`}
+            onClick={(e) => handleEdit(e, name, id)}
+          >
+            Edit
+          </Button>
+          <Button
+            data-testid={`deleteTournamentBtn-${id}`}
+            onClick={(e) => handleDelete(e, name, id)}
+          >
+            Delete
+          </Button>
+        </div>
+      </CardAnimation>
     )
   }
   return null

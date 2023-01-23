@@ -9,6 +9,7 @@ export const CardsGrid = styled.ul`
   padding: 0;
   grid-row-gap: ${theme.spacing(6)};
   grid-column-gap: ${theme.spacing(6)};
+  align-items: stretch;
 
   @media all and (max-width: ${theme.breakpoints.m}) {
     grid-template-columns: 1fr 1fr;
