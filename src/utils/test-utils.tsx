@@ -49,3 +49,11 @@ export const fakeTournaments = [
     game: 'tournamentGame2',
   },
 ]
+
+export const fakeTournament = (name: string) => {
+  return {
+    id: 'tournament0',
+    name,
+    game: 'tournamentGame0',
+  }
+}
