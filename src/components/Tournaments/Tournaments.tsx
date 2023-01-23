@@ -26,7 +26,11 @@ export const Tournaments = () => {
         {status === 'idle' &&
           entities &&
           entities.map((tournament, i) => (
-            <TournamentCard key={i} tournament={tournament} />
+            <TournamentCard
+              key={i}
+              numberOfTournament={i}
+              tournament={tournament}
+            />
           ))}
       </CardsGrid>
     </>

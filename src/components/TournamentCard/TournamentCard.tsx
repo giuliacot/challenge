@@ -15,6 +15,7 @@ import { H6 } from '../_atoms/H6'
 import theme from '../../common/theme'
 import { options } from '../../utils/dateFormatOption'
 import { checkTournamentNameOnlyAllowedChars } from '../../utils/inputValidation'
+import { fadeIn } from '../../common/animation'
 
 const CardText = styled.p`
   margin: 0;
@@ -23,21 +24,20 @@ const CardInfo = styled.div`
   margin-bottom: ${theme.spacing(2)};
 `
 
-const CardAnimation = styled(Card)`
+const CardAnimation = styled(Card)<{ nCard: number }>`
   display: inline-grid;
   align-content: space-between;
-  animation: fade-in 0.8s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
+  animation: ${fadeIn} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: ${(props) => props.nCard * 0.15}s;
 `
 
-export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
+export const TournamentCard = ({
+  tournament,
+  numberOfTournament,
+}: {
+  tournament: Tournament
+  numberOfTournament: number
+}) => {
   const dispatch = useAppDispatch()
 
   if (isTournament(tournament)) {
@@ -72,8 +72,8 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
     }
 
     return (
-      <CardAnimation>
-        <H6>{name}</H6>
+      <CardAnimation nCard={numberOfTournament}>
+        <H6>{name ?? '-'}</H6>
         <CardInfo>
           <CardText>Organizer: {organizer ?? '-'}</CardText>
           <CardText>Game: {game ?? '-'}</CardText>
