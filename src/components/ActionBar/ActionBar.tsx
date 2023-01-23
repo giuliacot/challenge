@@ -37,11 +37,10 @@ export const ActionBar = () => {
 
   const handleCreationTournament = () => {
     const newTournament = window.prompt('Tournament name:')
+    const hasValidStringToSearch =
+      newTournament && checkTournamentNameOnlyAllowedChars.test(newTournament)
 
-    if (
-      newTournament &&
-      checkTournamentNameOnlyAllowedChars.test(newTournament)
-    ) {
+    if (hasValidStringToSearch && status !== 'loading') {
       dispatch(createTournament({ newTournament }))
     }
   }
@@ -53,9 +52,10 @@ export const ActionBar = () => {
         placeholder={'Search tournament...'}
         type="text"
         onChange={(e) => debouncedSearch(e.target.value)}
-        disabled={status === 'loading'}
+        tabIndex={1}
       />
       <Button
+        tabIndex={0}
         data-testid="createTournamentBtn"
         onClick={() => handleCreationTournament()}
       >
