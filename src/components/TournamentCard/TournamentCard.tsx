@@ -61,7 +61,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
     }
 
     return (
-      <Card key={id}>
+      <Card>
         <H6>{name}</H6>
         <CardInfo>
           <CardText>Organizer: {organizer}</CardText>
@@ -78,8 +78,18 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
             </CardText>
           )}
         </CardInfo>
-        <Button onClick={(e) => handleEdit(e, name, id)}>Edit</Button>
-        <Button onClick={(e) => handleDelete(e, name, id)}>Delete</Button>
+        <Button
+          data-testid={`editTournamentBtn-${id}`}
+          onClick={(e) => handleEdit(e, name, id)}
+        >
+          Edit
+        </Button>
+        <Button
+          data-testid={`deleteTournamentBtn-${id}`}
+          onClick={(e) => handleDelete(e, name, id)}
+        >
+          Delete
+        </Button>
       </Card>
     )
   }
