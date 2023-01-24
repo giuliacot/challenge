@@ -6,7 +6,7 @@ import { App } from '../App'
 import userEvent from '@testing-library/user-event'
 import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 
-describe('ActionBar component tests: ', () => {
+describe('ActionBar Component tests: ', () => {
   beforeEach(() => {
     window.confirm = jest.fn().mockImplementation(() => true)
   })
@@ -25,7 +25,7 @@ describe('ActionBar component tests: ', () => {
     expect(await screen.findByText(/Loading tournament/i)).toBeInTheDocument()
   }, 9000)
 
-  test("given a search string, if the search doesn't had result, show empty state", async () => {
+  test("given a search string, if the search doesn't have results, show the empty state", async () => {
     const user = userEvent.setup()
     renderWithProviders(<App />, {
       preloadedState: {
@@ -76,7 +76,7 @@ describe('ActionBar component tests: ', () => {
     expect(window.prompt).toHaveBeenCalled()
   })
 
-  test('given a click on the create tournament button and added a valid tournament name, the app must shown the new tournament', async () => {
+  test('given a click on the create tournament button and adding a valid tournament name, the app must show the new tournament', async () => {
     const user = userEvent.setup()
 
     renderWithProviders(<App />, {
@@ -95,7 +95,7 @@ describe('ActionBar component tests: ', () => {
     expect(await screen.findByText('fake new tounrnament')).toBeInTheDocument()
   })
 
-  test('given a click on the create tournament button and clicking a "Cancel", the app must do nothing', async () => {
+  test('given a click on the create tournament button and clicking "Cancel", the app must do nothing', async () => {
     const user = userEvent.setup()
 
     renderWithProviders(<App />, {

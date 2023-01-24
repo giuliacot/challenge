@@ -5,8 +5,8 @@ import { screen } from '@testing-library/react'
 import { Tournaments } from './Tournaments'
 import { fakeTournaments, renderWithProviders } from '../../utils/test-utils'
 
-describe('Tournaments component tests: ', () => {
-  test('during the tournaments fetching, the app must render a loader', () => {
+describe('Tournaments Component tests: ', () => {
+  test("during the tournaments' fetching, the app must render a loader", () => {
     renderWithProviders(<Tournaments />, {
       preloadedState: {
         tournaments: {
@@ -18,7 +18,7 @@ describe('Tournaments component tests: ', () => {
     expect(screen.getByText(/Loading tournament/i)).toBeInTheDocument()
   })
 
-  test('given an error while fetching tournaments, the app must render the error msg', () => {
+  test('given an error while fetching tournaments, the app must render the error message', () => {
     renderWithProviders(<Tournaments />, {
       preloadedState: {
         tournaments: {
@@ -30,7 +30,7 @@ describe('Tournaments component tests: ', () => {
     expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument()
   })
 
-  test('given a succesfull tournaments fetching, the app must render each tournament', () => {
+  test('given successful tournaments fetching, the app must render each tournament', () => {
     renderWithProviders(<Tournaments />, {
       preloadedState: {
         tournaments: {
