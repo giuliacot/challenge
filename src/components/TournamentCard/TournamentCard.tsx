@@ -43,12 +43,7 @@ export const TournamentCard = ({
   if (isTournament(tournament)) {
     const { id, name, organizer, game, participants, startDate } = tournament
 
-    const handleEdit = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      id: string,
-      name?: string
-    ) => {
-      // TO IMPROVE: notifing the user if the check is not passed
+    const handleEdit = (id: string, name?: string) => {
       const editedName = window.prompt('New tournament name:', name)
       const validEditedName =
         editedName && checkTournamentNameOnlyAllowedChars.test(editedName)
@@ -59,17 +54,14 @@ export const TournamentCard = ({
       }
 
       if (!validEditedName) {
+        // IMPROVEMENTS: notyfing the user if the check is not passed
         window.confirm(
           "Oh no 🥺! You can't use special chars for new tournaments!"
         )
       }
     }
 
-    const handleDelete = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      id: string,
-      name?: string
-    ) => {
+    const handleDelete = (id: string) => {
       const userReply = window.confirm(
         'Do you really want to delete this tournament?'
       )
@@ -104,14 +96,14 @@ export const TournamentCard = ({
           <Button
             tabIndex={0}
             data-testid={`editTournamentBtn-${id}`}
-            onClick={(e) => handleEdit(e, id, name)}
+            onClick={() => handleEdit(id, name)}
           >
             Edit
           </Button>
           <Button
             tabIndex={0}
             data-testid={`deleteTournamentBtn-${id}`}
-            onClick={(e) => handleDelete(e, id, name)}
+            onClick={() => handleDelete(id)}
           >
             Delete
           </Button>
