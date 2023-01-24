@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react'
 import { render } from '@testing-library/react'
 import type { RenderOptions } from '@testing-library/react'
-import { configureStore } from '@reduxjs/toolkit'
-import type { PreloadedState } from '@reduxjs/toolkit'
+import { createStore, applyMiddleware, PreloadedState } from 'redux'
 import { Provider } from 'react-redux'
 
 import type { AppStore, RootState } from '../store/index'
-import { tournamentsReducer } from '../reducers/tournaments/tournaments'
+import { rootReducer } from '../reducers'
+import thunk from 'redux-thunk'
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>
   store?: AppStore
@@ -17,12 +17,8 @@ export function renderWithProviders(
   {
     preloadedState = {},
 
-    store = configureStore({
-      reducer: {
-        tournaments: tournamentsReducer,
-      },
-      preloadedState,
-    }),
+    store = createStore(rootReducer, preloadedState, applyMiddleware(thunk)),
+
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
