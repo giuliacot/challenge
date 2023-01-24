@@ -50,10 +50,18 @@ export const TournamentCard = ({
     ) => {
       // TO IMPROVE: notifing the user if the check is not passed
       const editedName = window.prompt('New tournament name:', name)
+      const validEditedName =
+        editedName && checkTournamentNameOnlyAllowedChars.test(editedName)
 
-      if (editedName && checkTournamentNameOnlyAllowedChars.test(editedName)) {
-        dispatch(editLocalTournament({ id, name: editedName }))
+      if (validEditedName) {
         dispatch(patchTournament({ id, editedName }))
+        dispatch(editLocalTournament({ id, name: editedName }))
+      }
+
+      if (!validEditedName) {
+        window.confirm(
+          "Oh no 🥺! You can't use special chars for new tournaments!"
+        )
       }
     }
 

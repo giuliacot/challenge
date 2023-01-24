@@ -9,6 +9,8 @@ import { App } from '../App'
 describe('TournamentCard Component tests: ', () => {
   test('given a tournament, when the user clicks the "Edit" button, the app must show a window prompt', async () => {
     window.prompt = jest.fn().mockImplementation(() => null)
+    window.confirm = jest.fn().mockImplementation(() => true)
+
     const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {
       preloadedState: {
@@ -27,6 +29,7 @@ describe('TournamentCard Component tests: ', () => {
 
   test('given a tournament, when the user clicks the "Edit" button and types a valid new tournament name, the app must show the edited tournament name', async () => {
     window.prompt = jest.fn().mockImplementation(() => 'edited tournament name')
+    window.confirm = jest.fn().mockImplementation(() => true)
 
     const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {

@@ -1,3 +1,3 @@
 export const checkTournamentNameOnlyAllowedChars = new RegExp(
-  /^[a-zA-Z0-9\s]+$/gi
+  /^[a-zA-Z0-9\s]+$/
 )
