@@ -103,10 +103,10 @@ export const deleteTournament =
 export const patchTournament =
   ({
     id,
-    editedName,
+    name,
   }: {
     id: string
-    editedName: string
+    name: string
   }): ThunkAction<void, RootState, null, TournamentsAction> =>
   async (dispatch, getState) => {
     const response = await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
@@ -114,8 +114,9 @@ export const patchTournament =
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: editedName }),
+      body: JSON.stringify({ name }),
     })
+
     await response.json()
     const { tournaments } = getState()
 

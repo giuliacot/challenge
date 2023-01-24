@@ -49,8 +49,8 @@ export const TournamentCard = ({
         editedName && checkTournamentNameOnlyAllowedChars.test(editedName)
 
       if (validEditedName) {
-        dispatch(patchTournament({ id, editedName }))
         dispatch(editLocalTournament({ id, name: editedName }))
+        dispatch(patchTournament({ id, name: editedName }))
       }
 
       if (!validEditedName) {
