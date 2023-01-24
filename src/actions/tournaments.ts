@@ -38,7 +38,7 @@ const searchedTournamentsSuccess: (
 export const fetchTournaments =
   (): ThunkAction<void, RootState, unknown, TournamentsAction> =>
   async (dispatch) => {
-    const response = await fetch(API_TOURNAMENTS_URL)
+    const response = await fetch(API_TOURNAMENTS_URL, { cache: 'force-cache' })
     const tournamentsFetched = (await response.json()) as Tournament[]
 
     if (response.ok) {
@@ -57,7 +57,9 @@ export const searchTournaments =
   async (dispatch) => {
     dispatch(loadingTournaments())
 
-    const response = await fetch(`${API_TOURNAMENTS_URL}?q=${searched}`)
+    const response = await fetch(`${API_TOURNAMENTS_URL}?q=${searched}`, {
+      cache: 'force-cache',
+    })
     const searchedResult = (await response.json()) as Tournament[]
 
     if (response.ok) {
