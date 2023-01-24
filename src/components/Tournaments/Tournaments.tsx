@@ -20,7 +20,7 @@ export const Tournaments = () => {
       {status === 'loading' && <Loader />}
       {status === 'rejected' && <ErrorMsg />}
       {status === 'idle' && entities.length === 0 && (
-        <MainContent>No tournaments found</MainContent>
+        <MainContent>No tournaments found.</MainContent>
       )}
       <CardsGrid>
         {status === 'idle' &&
