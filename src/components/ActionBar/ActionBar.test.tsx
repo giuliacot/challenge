@@ -7,6 +7,10 @@ import userEvent from '@testing-library/user-event'
 import { DEBOUNCE_TIMEOUT } from '../../constants/debounce'
 
 describe('ActionBar component tests: ', () => {
+  beforeEach(() => {
+    window.confirm = jest.fn().mockImplementation(() => true)
+  })
+
   test('given a search string, the app must show a loading state', async () => {
     const user = userEvent.setup({ delay: DEBOUNCE_TIMEOUT })
     renderWithProviders(<App />, {
@@ -65,6 +69,7 @@ describe('ActionBar component tests: ', () => {
         },
       },
     })
+
     window.prompt = jest.fn().mockImplementation(() => true)
 
     await user.click(screen.getByTestId('createTournamentBtn'))
@@ -73,6 +78,7 @@ describe('ActionBar component tests: ', () => {
 
   test('given a click on the create tournament button and added a valid tournament name, the app must shown the new tournament', async () => {
     const user = userEvent.setup()
+
     renderWithProviders(<App />, {
       preloadedState: {
         tournaments: {
